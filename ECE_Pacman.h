@@ -10,7 +10,9 @@ class ECE_Pacman {
         int gamseState;
         int xx, yy;
         //counts for coins and power ups
-        int coinCount, puCount;
+        int coinCount = 0;
+        int puCount = 0;
+        int win = 0;
         //draws PacMan at the x and y coordinates specified by pac
         static void drawPacMan(ECE_Pacman pac);
         //returns 1 if pacman can move there, 0 if he can't

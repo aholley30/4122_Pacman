@@ -14,6 +14,7 @@
 ECE_Pacman::ECE_Pacman() {
     xx = 10;
     yy = 1;
+    gamseState = 0;
 }
 
 //draw Pacman

@@ -9,6 +9,7 @@
 #include <math.h>
 #include "map.h"
 #include <iostream>
+#include <string.h>
 
 
 #define ESC 27
@@ -37,14 +38,29 @@ int xDragStart = 0; // records the x-coordinate when dragging starts
 // Camera direction
 float lx = 0.0, ly = 0.0; // camera points initially along y-axis
 
-
+//reset the map, add coins and power ups back
+void resetMap() {
+    for(int i = 0; i < 22; i++) {
+        for(int j = 0; j < 19; j++) {
+            map[i][j] = ogMap[i][j];
+        }
+    }
+    pac = ECE_Pacman();
+}
 //Update the display
 void update(void)
 {   
+    if (pac.coinCount >= 152 && pac.puCount == 4) {
+        resetMap();
+        pac.gamseState = 1;
+        pac.win = 1;
+    } 
+    else {
+        glPushMatrix();
+        ECE_Pacman::drawPacMan(pac);
+        glPopMatrix();
+    }
     
-    glPushMatrix();
-    ECE_Pacman::drawPacMan(pac);
-    glPopMatrix();
     //std::cout<<"current pos: " << pac.xx << ", " << pac.yy << std::endl;
     glutPostRedisplay(); // redisplay everything
 }
@@ -120,6 +136,21 @@ void drawCoin() {
         glutSolidSphere(0.1, 20, 20); // tiny dot
     glPopMatrix();
 }
+/* Draw a character string.
+ *
+ * @param x        The x position
+ * @param y        The y position
+ * @param z        The z position
+ * @param string   The character string
+ */
+void drawString(float x, float y, float z, char *string) {
+  glRasterPos3f(x, y, z);
+
+  for (char* c = string; *c != '\0'; c++) {
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c);  // Updates the position
+  }
+}
+        
 //draws whole scene: walls, ghosts, pacman, etc. Sets cam location
 void renderScene() {
 
@@ -129,24 +160,30 @@ void renderScene() {
     // Reset transformations
     glLoadIdentity();
 
-    // Set the camera centered at (x,y,1) and looking along directional
-    // vector (lx, ly, 0), with the z-axis pointing up
-    gluLookAt(
-        x, y, z,
-        lx, ly, 0.0,
-        0.0, 0.0, 1.0);
-    
-    int rowRed = 0;
-    int colRed = 0;
-    //wrap whole map in push/pop in order to rotate it easier
-    glPushMatrix();
-    //change view angle when "R" is pressed
-    glRotatef(z_angle,0.0,0.0,1.0); 
-    //iterate over map array to draw items in right place
-    for (int row = 0; row < 22; ++row) {
-        for (int col = 0; col < 19; ++col) {
-            char elem = map[row][col];
-            switch(elem) {
+        // Set the camera centered at (x,y,1) and looking along directional
+        // vector (lx, ly, 0), with the z-axis pointing up
+        gluLookAt(
+            x, y, z,
+            lx, ly, 0.0,
+            0.0, 0.0, 1.0);
+    if (pac.gamseState == 0) 
+    {
+        
+
+        int rowRed = 0;
+        int colRed = 0;
+        //wrap whole map in push/pop in order to rotate it easier
+        glPushMatrix();
+        //change view angle when "R" is pressed
+        glRotatef(z_angle, 0.0, 0.0, 1.0);
+        //iterate over map array to draw items in right place
+        for (int row = 0; row < 22; ++row)
+        {
+            for (int col = 0; col < 19; ++col)
+            {
+                char elem = map[row][col];
+                switch (elem)
+                {
                 //draw vertical walls
                 case 'v':
                     glPushMatrix();
@@ -245,18 +282,38 @@ void renderScene() {
                     ECE_Ghost::drawOrangeGhost();
                     glPopMatrix();
                     break;
-                
-
+                }
             }
         }
-    }
 
-    glPopMatrix();
+        glPopMatrix();
+    }
+    else {
+        glPushMatrix();
+        //char string[11] = "Game Over!";
+        glColor3f(1.0, 1.0, 1.0);
+        if (pac.win == 1) {
+            char string[20] = "Game Over. You won!";
+            drawString(0,0,1,string);
+        } else {
+            char string[23] = "Game Over. You lost :(";
+            drawString(0,0,1,string);
+        }
+        char string2[] = "press p to play again";
+        drawString(7,3.5,1,string2);
+        
+       
+        
+        
+        glPopMatrix();
+
+    }
     
     glutSwapBuffers(); //draw everything
     
     
 }
+
 //allow key presses to effect something on display
 void processNormalKeys(unsigned char key, int xx, int yy)
 {
@@ -266,13 +323,17 @@ void processNormalKeys(unsigned char key, int xx, int yy)
         exit(0);
     } 
     //adjust angle by 5 degrees
-    else if (key == 'R') {
+    else if (key == 'R' && pac.gamseState == 0) {
         z_angle = ((int)z_angle - 5) % 360;
         glutPostRedisplay();
     }
-    else if (key == 's') {
+    else if (key == 's' && pac.gamseState == 0) {
         std::cout << "Coins: " << pac.coinCount <<std::endl;
         std::cout << "PowerUps: " << pac.puCount <<std::endl;
+    }
+    else if (key == 'p' && pac.gamseState == 1) {
+        pac.gamseState = 0;
+        update();
     }
 
 }
@@ -282,7 +343,7 @@ void pressSpecialKey(int key, int xx, int yy)
     switch(key) 
     {
     case GLUT_KEY_UP: 
-    if (ECE_Pacman::canMove(key, map, pac)) {
+    if (ECE_Pacman::canMove(key, map, pac) && pac.gamseState == 0) {
         //std::cout << map[15 - pac.xx - 1][10 - pac.yy] <<std::endl;
         //std::cout << "x: " << 15 - pac.xx - 1 << " y: " << 10 - pac.yy << std::endl;
         if (map[15-pac.xx][10-pac.yy] == 'c') {
@@ -298,7 +359,7 @@ void pressSpecialKey(int key, int xx, int yy)
         update();
     } break;
     case GLUT_KEY_DOWN:
-    if (ECE_Pacman::canMove(key, map, pac)) {
+    if (ECE_Pacman::canMove(key, map, pac) && pac.gamseState == 0) {
         //std::cout << map[15 - pac.xx + 1][10 - pac.yy] <<std::endl;
         //std::cout << "x: " << 15 - pac.xx + 1 << " y: " << 10 - pac.yy << std::endl;
         if (map[15-pac.xx][10-pac.yy] == 'c') {
@@ -314,7 +375,7 @@ void pressSpecialKey(int key, int xx, int yy)
         update();
     } break;
     case GLUT_KEY_RIGHT:
-    if (ECE_Pacman::canMove(key, map, pac)) {
+    if (ECE_Pacman::canMove(key, map, pac) && pac.gamseState == 0) {
         //std::cout << map[15 - pac.xx][10 - pac.yy + 1] <<std::endl;
         //std::cout << "x: " << 15 - pac.xx << " y: " << 10 - pac.yy + 1 << std::endl;
         if (map[15-pac.xx][10-pac.yy] == 'c') {
@@ -338,7 +399,7 @@ void pressSpecialKey(int key, int xx, int yy)
     } break;
     case GLUT_KEY_LEFT:
     //std::cout<<"left" <<std::endl;
-    if (ECE_Pacman::canMove(key, map, pac) || (pac.xx == 4 && pac.yy == -8)) {
+    if ((ECE_Pacman::canMove(key, map, pac) || (pac.xx == 4 && pac.yy == -8)) && pac.gamseState == 0) {
         //std::cout << map[15 - pac.xx][10 - pac.yy - 1] <<std::endl;
         //std::cout << "x: " << 15 - pac.xx << " y: " << 10 - pac.yy - 1 << std::endl;
         if (map[15-pac.xx][10-pac.yy] == 'c') {
