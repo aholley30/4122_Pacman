@@ -1,0 +1,60 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/allie/Documents/ECE4122/Lab 4/ECE_Ghost.cpp
+GL/glut.h
+-
+math.h
+-
+ECE_Ghost.h
+/home/allie/Documents/ECE4122/Lab 4/ECE_Ghost.h
+iostream
+-
+
+/home/allie/Documents/ECE4122/Lab 4/ECE_Ghost.h
+dij.h
+/home/allie/Documents/ECE4122/Lab 4/dij.h
+
+/home/allie/Documents/ECE4122/Lab 4/ECE_Pacman.cpp
+GL/glut.h
+-
+math.h
+-
+ECE_Pacman.h
+/home/allie/Documents/ECE4122/Lab 4/ECE_Pacman.h
+iostream
+-
+
+/home/allie/Documents/ECE4122/Lab 4/ECE_Pacman.h
+
+/home/allie/Documents/ECE4122/Lab 4/dij.h
+bits/stdc++.h
+-
+chrono
+-
+
+/home/allie/Documents/ECE4122/Lab 4/main.cpp
+ECE_Pacman.h
+/home/allie/Documents/ECE4122/Lab 4/ECE_Pacman.h
+ECE_Ghost.h
+/home/allie/Documents/ECE4122/Lab 4/ECE_Ghost.h
+GL/glut.h
+-
+math.h
+-
+map.h
+/home/allie/Documents/ECE4122/Lab 4/map.h
+iostream
+-
+string.h
+-
+thread
+-
+
+/home/allie/Documents/ECE4122/Lab 4/map.h
+

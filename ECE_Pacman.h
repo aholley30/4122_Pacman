@@ -8,15 +8,23 @@ class ECE_Pacman {
         ECE_Pacman();
         //0 = normal, 1 = over
         int gamseState;
-        int xx, yy;
+        //corresponds to glut keys (i.e GLUT_KEY_UP)
+        int dir;
+        int lifecount;
+        double xx, yy;
+        //double rxx, ryy;
         //counts for coins and power ups
         int coinCount = 0;
         int puCount = 0;
         int win = 0;
+        bool canMove(int key);
+        void move();
         //draws PacMan at the x and y coordinates specified by pac
         static void drawPacMan(ECE_Pacman pac);
         //returns 1 if pacman can move there, 0 if he can't
         static int canMove(int key, char map[22][19], ECE_Pacman pac); 
         //checks if there's a coin or power up at pacman's location
-        static void coinPU(ECE_Pacman pac);
+        void coinPU();
+        // static void move(ECE_Pacman &pac);
+
 };
