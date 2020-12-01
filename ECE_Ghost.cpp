@@ -7,7 +7,7 @@
 #include <GL/glut.h>
 #include <math.h>
 #include "ECE_Ghost.h"
-#include <chrono>
+
 
 #define RIGHT 0
 #define LEFT 1
@@ -30,7 +30,7 @@ char map2[22][19] = {{'h','h','h','h','h','h','h','h','h','h','h','h','h','h','h
                    {'h','h','h','v','c','v','0','h','h','h','h','0','0','v','c','h','h','h','0'},
                    {'0','0','0','0','c','0','0','v','8','7','6','v','0','0','c','0','0','0','0'},
                    //{'0','0','0','0','c','0','0','v','0','0','0','v','0','0','c','0','0','0','0'},
-                   {'h','h','h','0','c','0','0','h','0','0','h','v','0','0','c','h','h','h','0'},
+                   {'h','h','h','0','c','0','0','h','h','h','h','v','0','0','c','h','h','h','0'},
                    {'0','0','0','v','c','v','0','0','0','0','0','0','0','v','c','v','0','0','0'},
                    //{'0','0','0','v','c','v','0','0','0','0','0','0','0','v','c','v','0','0','0'},
                    {'h','h','h','v','c','h','h','0','0','0','0','h','h','v','c','h','h','h','0'},
@@ -118,6 +118,7 @@ void ECE_Ghost::resetG(){
     yy = y1;
     drawnOnce = 0;
     firstMove = true;
+    wasSick = false;
 }
 //check if coordinates of proposed direction are allowed
 bool ECE_Ghost::isUnique(Pair p, std::vector<Pair> vec) {

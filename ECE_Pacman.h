@@ -3,7 +3,7 @@
  * Last Date Modified: 10/26/2020
  * Description: Header file to define ECE_Pacman class
  * */
-#define _USE_MATH_DEFINES
+
 
 class ECE_Pacman {
     public:

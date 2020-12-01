@@ -19,7 +19,7 @@ int count = 0; //to count iterations, alternative to making threads sleep
 
 
 ECE_Pacman pac = ECE_Pacman();
-
+bool allowPause = false; //press x then g to pause ghosts
 bool isSick = false;
 int drawnOnce = 0;
 ECE_Ghost red = ECE_Ghost('r');
@@ -135,7 +135,7 @@ void update(void)
             if (count % 5 == 0) {
                 if (red.wasSick) {
                     releaseTimer[0]++;
-                    if (releaseTimer[0] >= 200) {
+                    if (releaseTimer[0] >= 50) {
                         red.wasSick = false;
                         th[0] = std::thread(&ECE_Ghost::move,std::ref(red));
                         th[0].join();
@@ -151,7 +151,7 @@ void update(void)
             if (count >= 50 && count % 6 == 0) {
                 if (green.wasSick) {
                     releaseTimer[1]++;
-                    if(releaseTimer[1] >= 200) {
+                    if(releaseTimer[1] >= 50) {
                         green.wasSick = false;
                         th[1] = std::thread(&ECE_Ghost::move,std::ref(green));
                         th[1].join();
@@ -167,7 +167,7 @@ void update(void)
             if (count >= 100 && count % 7 == 0) {
                 if (pink.wasSick) {
                     releaseTimer[2]++;
-                    if(releaseTimer[2] >= 200) {
+                    if(releaseTimer[2] >= 50) {
                         pink.wasSick = false;
                         th[2] = std::thread(&ECE_Ghost::move,std::ref(pink));
                         th[2].detach();
@@ -600,15 +600,18 @@ void processNormalKeys(unsigned char key, int xx, int yy)
         std::cout << "pacman map: " <<15 - pac.xx << ", " << 10 - pac.yy <<std::endl;
         //std::cout << "red: " << red.xx << ", " << red.yy <<std::endl;
     }
+    else if (key == 'x') {
+        allowPause = !allowPause;
+    }
     else {
-        enableGhosts = true;
+        if (!allowPause) enableGhosts = true;
     }
 
 }
 //move pacman based on key press
 void pressSpecialKey(int key, int xx, int yy)
 {
-    enableGhosts = true;
+    if (!allowPause) enableGhosts = true;
     switch(key) 
     {
     case GLUT_KEY_UP: 
