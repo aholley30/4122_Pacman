@@ -70,4 +70,6 @@ char ogMap[22][19] = {{'h','h','h','h','h','h','h','h','h','h','h','h','h','h','
                    {'h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','v'}};
 
                    //To add commit to github
-                   //1. 
+                   //1. git add .
+                   //2. git commit -m "updated movement"
+                   //3. git push origin branch-name

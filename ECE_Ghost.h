@@ -14,22 +14,28 @@ extern std::vector<Pair> mW;
 class ECE_Ghost {
 
     public:
-        
+        //current coordinates
         double xx, yy;
+        //original coordinates
         double x1, y1;
         //0 = right, 1 = left, 2 = up, 3 = down
         int dir;
         bool couldMove;
+        //if it is it's first time moving, adjust coordinate to whole #
         bool firstMove;
-        bool wasSick;
+        //if a ghost was sick before being redraw, it needs to wait 5 sec
+        bool wasSick; 
+        //pacman's coordinates, updated in main
         inline static int pxx = 10;
         inline static int pyy = 0;
+        //0 = running, 1 = over
+        inline static int gameState = 0;
         char color;
-        //int isSick;
         //draw coordinates according to map array once, then position might change
         int drawnOnce = 0;
+        //contructor
         ECE_Ghost(char color);
-        //reset ghost position
+        //reset ghost positions
         void resetG();
         int exitCount();
         int updateMove(std::vector<Pair> &vec);
@@ -38,7 +44,7 @@ class ECE_Ghost {
         void cornerHandler();
         bool isUnique(Pair p, std::vector<Pair> vec);
         void move();
-        inline static int gameState = 0;
+        
         static void drawRedGhost(ECE_Ghost g);
         static void drawPinkGhost(ECE_Ghost g);
         static void drawGreenGhost(ECE_Ghost g);

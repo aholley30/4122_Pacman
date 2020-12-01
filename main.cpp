@@ -13,17 +13,10 @@
 #include <thread>
 #include <vector>
 
-int gameState;
+int gameState; //0 = running, 1 = over
 int count = 0; //to count iterations, alternative to making threads sleep
 #define ESC 27
-//TODO: make vector of missing wall coordinates -> pass to dij - done
-//TODO: reverse direction of ghosts when sick
-//TODO: add  delay to ghosts on start, 2 each - done
-//TODO: make ghosts killable - once killed, respawn after 5 sec
-//TODO: make green ghost move
-//make ghosts continously move
 
-//make pacman continuously move - done
 
 ECE_Pacman pac = ECE_Pacman();
 
@@ -34,11 +27,10 @@ ECE_Ghost pink = ECE_Ghost('p');
 ECE_Ghost green = ECE_Ghost('g');
 ECE_Ghost orange = ECE_Ghost('o');
 
-//std::thread thread;
-bool firstRelease = true;
+
 int sickTimer = 0;
-int releaseTimer[4] = {0}; //for when ghosts get eaten
-typedef std::pair<int, int> Pair; 
+int releaseTimer[4] = {0}; //for when ghosts get eaten, each ghost has their own
+typedef std::pair<int, int> Pair; //makes storing map indices easier
 std::vector<Pair> mW; //missed wall coordinates
 bool vecInit = true; //make sure vector is only initialized once
 GLUquadricObj *c = gluNewQuadric();
@@ -57,7 +49,6 @@ int countp = 0;
 int isDragging = 0; //  true when dragging
 int xDragStart = 0; // records the x-coordinate when dragging starts
 
-int gxx, gyy;
 // Camera direction
 float lx = 0.0, ly = 0.0; // camera points initially along y-axis
 
@@ -100,17 +91,15 @@ void resetMap() {
     isSick = false;
     count = 0;
     countp = 0;
+    enableGhosts = false;
     //std::cout<< "gamestate: " << pac.gamseState <<std::endl;
     glutPostRedisplay();
 }
-//Update the display
-int runThreads = 0;
 
-
-
+//update the display
 void update(void)
 {   
-    //std::thread thread(ECE_Ghost::updateMove,red,std::make_pair(pac.xx,pac.yy));
+    
     if (pac.coinCount >= 152 && pac.puCount == 4) {
         resetMap();
         pac.gamseState = 1;
@@ -118,13 +107,8 @@ void update(void)
         pac.win = 1;
     } 
     
-        
-    //}
     else {
-        //glPushMatrix();
-        //ECE_Pacman::drawPacMan(pac);
-        //ECE_Ghost g[4] = {green, red, pink, orange};
-        //std::cout<<"gamestate: " << gameState <<std::endl;
+
         ECE_Ghost::pxx = pac.xx;
         ECE_Ghost::pyy = pac.yy;
         if (ECE_Ghost::gameState == 1) {
@@ -144,12 +128,7 @@ void update(void)
             }
             
         }
-        //ECE_Ghost::ghostInit( g, std::make_pair(pac.xx,pac.yy));
-        
-        // ECE_Ghost::updateMove(red,pac.xx,pac.yy);
-        // ECE_Ghost::updateMove(pink,pac.xx,pac.yy);
-        // ECE_Ghost::updateMove(green,pac.xx,pac.yy);
-        // ECE_Ghost::updateMove(orange,pac.xx,pac.yy);
+
         
         std::thread th[4];
         if (enableGhosts) {
@@ -165,11 +144,11 @@ void update(void)
                 }
                 else {
                     th[0] = std::thread(&ECE_Ghost::move,std::ref(red));
-                    th[0].join(); 
+                    th[0].detach(); 
                 }
                 
             }
-            if (count >= 200 && count % 6 == 0) {
+            if (count >= 50 && count % 6 == 0) {
                 if (green.wasSick) {
                     releaseTimer[1]++;
                     if(releaseTimer[1] >= 200) {
@@ -181,71 +160,67 @@ void update(void)
                 }
                 else {
                     th[1] = std::thread(&ECE_Ghost::move,std::ref(green));
-                    th[1].join();
+                    th[1].detach();
                 }
                 
             }
-            if (count >= 350 && count % 7 == 0) {
+            if (count >= 100 && count % 7 == 0) {
                 if (pink.wasSick) {
                     releaseTimer[2]++;
                     if(releaseTimer[2] >= 200) {
                         pink.wasSick = false;
                         th[2] = std::thread(&ECE_Ghost::move,std::ref(pink));
-                        th[2].join();
+                        th[2].detach();
                         releaseTimer[2] = 0;
                     }
                 }
                 else {
                     th[2] = std::thread(&ECE_Ghost::move,std::ref(pink));
-                    th[2].join();
+                    th[2].detach();
                 }
             }
-            if (count >= 550 && count % 8 == 0) {
+            if (count >= 150 && count % 8 == 0) {
                 if (orange.wasSick) {
                     releaseTimer[3]++;
                     if(releaseTimer[3] >= 200) {
                         orange.wasSick = false;
                         th[3] = std::thread(&ECE_Ghost::move,std::ref(orange));
-                        th[3].join();
+                        th[3].detach();
                         releaseTimer[3] = 0;
                     }
                 }
                 else {
                     th[3] = std::thread(&ECE_Ghost::move,std::ref(orange));
-                    th[3].join();
+                    th[3].detach();
                 }
             }
             if (isSick) {
                 sickTimer++;
                 //std::cout<<sickTimer<<std::endl;
-                if (sickTimer >= 400) {
+                if (sickTimer >= 175) {
                     isSick = false;
                     //printf("not sick anymore");
                     sickTimer = 0;
                 }
             }
         }
-
+        //move pacman
         if(pac.canMove(pac.dir) && countp % 2 == 0) {
             coinPU();
             pac.move();
+            if ((int)round(pac.xx) == 4 && (int)round(pac.yy) >= 10) { //stubborn portal, other is in keyboard func
+                pac.dir = 0;
+                pac.xx = 4;
+                pac.yy = -9;
+            }
         }
-        //ECE_Ghost::updateMove(green, pac.xx,pac.yy,mW );
-        //th[1] = std::thread(ECE_Ghost::updateMove,std::ref(pink),pac.xx,pac.yy);
-        //th[2] = std::thread(ECE_Ghost::updateMove,std::ref(green),pac.xx,pac.yy);;
-        //th[3] = std::thread(ECE_Ghost::updateMove,std::ref(orange),pac.xx,pac.yy);;
+        //check if ghosts changed gamestate (caught pacman)
        if(ECE_Ghost::gameState == 1) {
            pac.gamseState = 1;
            gameState = 1;
        }
-        //for (auto& threads : th) threads.join();
-        
-        //std::cout << red.xx << ", " << red.yy <<std::endl;
-        //ECE_Ghost::drawRedGhost(red);
-        //idk = std::thread([ths] { this->aStarSearch(map1,Pair(15-green.xx,10-green.yy),Pair(15-pac.xx,10-pac.yy), green); });
-        //std::thread thread(dijkstra::aStarSearch,map1,Pair(15-red.xx,10-red.yy),Pair(15-pac.xx,10-pac.yy));
-        //glPopMatrix();
-        if (enableGhosts) count++;
+
+       if (enableGhosts) count++;
     }
     countp++;
     //std::cout<<"current pos: " << pac.xx << ", " << pac.yy << std::endl;
@@ -345,14 +320,14 @@ void drawString(float x, float y, float z, char *string) {
   glRasterPos3f(x, y, z);
 
   for (char* c = string; *c != '\0'; c++) {
-    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c);  // Updates the position
+    glutBitmapCharacter( GLUT_BITMAP_TIMES_ROMAN_24, *c);  // Updates the position
   }
 }
         
 //draws whole scene: walls, ghosts, pacman, etc. Sets cam location
 void renderScene() {
     if (vecInit) {
-        //add 15, 10 back
+        //add some missed sections to the can't move here array (mW)
         mW.push_back(std::make_pair(6,9));
         mW.push_back(std::make_pair(6,7));
         mW.push_back(std::make_pair(8,5));
@@ -496,6 +471,7 @@ void renderScene() {
                 //draw green ghost
                 case '6':
                     glPushMatrix();
+                    //initialyze position
                     if (green.drawnOnce == 0) {
                         green.xx = 15 - row + 0.5;
                         green.x1 = green.xx;
@@ -553,6 +529,17 @@ void renderScene() {
         }
 
         glPopMatrix();
+
+        glPushMatrix();
+        glColor3f(1.0, 1.0, 1.0);
+        std::string disp = "Lives: " + std::to_string(pac.lifecount);
+        //std::cout << disp << std::endl;
+        char myArray[disp.size()+1];//as 1 char space for null is also required
+        strcpy(myArray, disp.c_str());
+        //std::cout <<myArray <<std::endl;
+        drawString(15,-10,10,myArray);
+        glPopMatrix();
+        
     }
     else {
         glPushMatrix();
@@ -566,7 +553,7 @@ void renderScene() {
             drawString(0,0,1,string);
         }
         char string2[] = "press p to play again";
-        drawString(7,3.5,1,string2);
+        drawString(7,4,1,string2);
         
        
         
@@ -613,11 +600,15 @@ void processNormalKeys(unsigned char key, int xx, int yy)
         std::cout << "pacman map: " <<15 - pac.xx << ", " << 10 - pac.yy <<std::endl;
         //std::cout << "red: " << red.xx << ", " << red.yy <<std::endl;
     }
+    else {
+        enableGhosts = true;
+    }
 
 }
 //move pacman based on key press
 void pressSpecialKey(int key, int xx, int yy)
 {
+    enableGhosts = true;
     switch(key) 
     {
     case GLUT_KEY_UP: 
@@ -675,7 +666,7 @@ void pressSpecialKey(int key, int xx, int yy)
             map1[15-(int)round(pac.xx)][10-(int)round(pac.yy)] = '0';
         }
         
-        if ((int)round(pac.xx) == 4 && (int)round(pac.yy) == 10) {
+        if ((int)round(pac.xx) == 4 && (int)round(pac.yy) >= 10) {
             pac.dir = 0;
             pac.xx = 4;
             pac.yy = -9;
@@ -704,7 +695,7 @@ void pressSpecialKey(int key, int xx, int yy)
             isSick = true;
             map1[15-(int)round(pac.xx)][10-(int)round(pac.yy)] = '0';
         }
-        if ((int)round(pac.xx) == 4 && (int)round(pac.yy) == -8) {
+        if ((int)round(pac.xx) == 4 && (int)round(pac.yy) <= -8) {
             pac.dir = 1;
             pac.xx = 4;
             pac.yy = 10;

@@ -1,21 +1,19 @@
 /* Author: Alessandria Holley
  * Class: ECE4122
- * Last Date Modified: 10/26/2020
+ * Last Date Modified: 11/30/2020
  * Description: implements the functions in ECE_Ghost.h, allows ghosts to be drawn
+ * Used some shortest path algorithm from https://github.com/tkilminster/pacman/blob/master/Ghost.h 
  * */
 #include <GL/glut.h>
 #include <math.h>
 #include "ECE_Ghost.h"
-#include "dij.h"
-//#include <thread>
 #include <chrono>
 
 #define RIGHT 0
 #define LEFT 1
 #define DOWN 3
 #define UP 2
-//#include <iostream>
-//#include "dij.h"
+
 
 
 char map2[22][19] = {{'h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','h','0'},
@@ -121,7 +119,7 @@ void ECE_Ghost::resetG(){
     drawnOnce = 0;
     firstMove = true;
 }
-
+//check if coordinates of proposed direction are allowed
 bool ECE_Ghost::isUnique(Pair p, std::vector<Pair> vec) {
     if (vec.empty()) return true;
     for (int i = 0; i < vec.size(); i++) {
@@ -190,46 +188,26 @@ int ECE_Ghost::exitCount() {
 double ECE_Ghost::getDistance(int x, int y) {
     int tmpx = pxx;
     int tmpy = pyy;
-
+    //change ghost's target tile to one that's opposit of pacman
     if(isSick) {
         switch (color) {
-            
             case 'r':
-                //if (pxx > 5) { //-5 is as negative as the map gets for x axis
-                    tmpx = 14 - pxx - 5; //14 is the max x coordinate
-                    return (sqrt(((tmpx - x) * (tmpx - x)) + ((pyy - y) * (pyy - y))));
-                //}
-                //else return (sqrt(((-pxx - x) * (-pxx - x)) + ((pyy - y) * (pyy - y))));
+                tmpx = 14 - pxx - 5; //14 is the max x coordinate, -5 is the min
+                return (sqrt(((tmpx - x) * (tmpx - x)) + ((pyy - y) * (pyy - y))));
             case 'g':
-                //if (pyy > 7) {  //-7 is the minimum y coordinate
-                    tmpy = 9 - pxx - 7; //9 is the max
-                    return (sqrt(((pxx - x) * (pxx - x)) + ((tmpy - y) * (tmpy - y))));
-                //}
-                //return (sqrt(((pxx - x) * (pxx - x)) + ((-pyy - y) * (-pyy - y))));
+                tmpy = 9 - pxx - 7; //9 is the max, -7 is the min
+                return (sqrt(((pxx - x) * (pxx - x)) + ((tmpy - y) * (tmpy - y))));
             case 'o':
-                //tmpx = pxx;
-                //tmpy = pyy;
-                //if (pxx > 5) { //-5 is as negative as the map gets for x axis
-                    tmpx = 14 - pxx - 5; //14 is the max x coordinate
-                //}
-                //if (pyy > 7) {  //-7 is the minimum y coordinate
-                    tmpy = 9 - pxx - 7; //9 is the max
-                //}
+                tmpx = 14 - pxx - 5; //14 is the max x coordinate, -5 is the min
+                tmpy = 9 - pyy - 7; //9 is the max, -7 is the min
                 return (sqrt(((tmpx - x) * (tmpx - x)) + ((tmpy - y) * (tmpy - y))));
             case 'p':
-                //tmpx = pxx;
-                //tmpy = pyy;
-                //if (pxx > 5) { //-5 is as negative as the map gets for x axis
-                    tmpx = 14 - pxx - 5; //14 is the max x coordinate
-                //}
-                //if (pyy > 7) {  //-7 is the minimum y coordinate
-                    tmpy = 9 - pxx - 7; //9 is the max
-                //}
+                tmpx = 14 - pxx - 5; //14 is the max x coordinate
+                tmpy = 9 - pyy - 7; //9 is the max, -7 is the min
                 return (sqrt(((tmpx - x) * (tmpx - x)) + ((tmpy - y) * (tmpy - y))));
         }
     }
-    //std::cout<<pxx << ", " << pyy <<std::endl;
-    //std::cout<<"Ghost: "<<xx << ", " << yy <<std::endl;
+
     return (sqrt(((pxx - x) * (pxx - x)) + ((pyy - y) * (pyy - y))));
 }
 void ECE_Ghost::cornerHandler()
@@ -259,8 +237,6 @@ void ECE_Ghost::cornerHandler()
      * Determines which direction to move by checking all potential moves around itself and comparing how close each
      * potential move will put it to the target tile. It then selects the move which puts it the closest to the
      * target tile
-     * @param colGhost The colour of the current ghost
-     * @param ghost Pass in a ghost object in case the chosen move technique must use another ghost to calculate where to move
      */
     void ECE_Ghost::move()
     {
@@ -323,6 +299,7 @@ void ECE_Ghost::cornerHandler()
                 xx++;
                 break;
         }
+        //check if ghost caught pacman or pacman caught ghost
         if (xx == pxx && yy == pyy) {
             if (isSick) {
                 resetG();
@@ -331,103 +308,3 @@ void ECE_Ghost::cornerHandler()
             else gameState = 1;
         }
     }
-
-// void ECE_Ghost::move(std::vector<Pair> &vec) {
-//     if(firstMove) {
-//         xx = round(xx);
-//         yy = round(yy);
-//     }
-//     updateMove(vec);
-//     if(!canMove()) dir = 5;
-//     switch(dir) {
-//         case 0:
-//             if(canMove()){
-//                 printf("moved right");
-//                 yy++;
-//                 couldMove = true;
-//             } 
-//             break;
-//         case 1:
-//             if(canMove()) {
-//                 printf("moved left");
-//                 yy--;
-//                 couldMove = true;
-//             } 
-//             break;
-//         case 2:
-//             if(canMove()){
-//                 printf("moved up");
-//                 xx--;
-//                 couldMove = true;
-//             }
-//             break;
-//         case 3:
-//             if(canMove()) {
-//                 printf("moved down");
-//                 xx++;
-//                 couldMove = true;
-//             } 
-//             break;
-//         default:
-//             couldMove = false;
-//             while(!canMove()) {
-//                 dir = rand()%(3 + 1);
-//             }
-//             std::cout << "chose direction randomly: " << dir <<std::endl;
-//     }
-//     if (xx == pxx && yy == pyy) {
-//            //printf("updated gs");
-//            gameState = 1;
-//        }
-// }
-// void ECE_Ghost::updateMove(ECE_Ghost &g, int x, int y, std::vector<Pair> &vec) 
-//     {
-//         Pair p = std::make_pair(pxx,pyy);
-//         std::pair<int,int> p2 = dij::aStarSearch(map2,std::make_pair(g.xx,g.yy),p, std::ref(vec));
-//         if (p2.first != 0 && p2.second != 0) {
-            
-//             g.xx = 15 - p2.first;
-//             g.yy = 10 - p2.second;
-            
-//         }
-//        if (g.xx == pxx && g.yy == pyy) {
-//            //printf("updated gs");
-//            gameState = 1;
-//        }
-//     }
-
-// int ECE_Ghost::canMove(int key, ECE_Ghost g, char map[22][19]) {
-//     switch(key) 
-//     {
-//         case GLUT_KEY_UP:
-//             if (map[abs(15 - (int)g.xx) + 1][abs(10 - (int)g.yy)] != 'v' && map[abs(15 - (int)g.xx) + 1][abs(10 - (int)g.yy)] != 'h') 
-//             {
-//                 return 1;
-//             }
-//             else return 0;
-//             break;
-//         case GLUT_KEY_DOWN:
-//             if (map[abs(15 - (int)g.xx) - 1][abs(10 - (int)g.yy)] != 'v' && map[abs(15 - (int)g.xx) - 1][abs(10 - (int)g.yy)] != 'h') 
-//             {
-//                 return 1;
-//             }
-//             else return 0;
-//             break;
-//         case GLUT_KEY_RIGHT:
-//             if (map[abs(15 - (int)g.xx) ][abs(10 - (int)g.yy) - 1] != 'v' && map[abs(15 - (int)g.xx) ][abs(10 - (int)g.yy) - 1] != 'h') 
-//             {
-//                 //std::cout<<map[abs(15 - g.xx) ][abs(10 - g.yy) + 1] <<std::endl;
-//                 return 1;
-//             }
-//             else return 0;
-//             break;
-//         case GLUT_KEY_LEFT:
-//             if (map[abs(15 - (int)g.xx)][abs(10 - (int)g.yy) + 1] != 'v' && map[abs(15 - (int)g.xx)][abs(10 - (int)g.yy) + 1] != 'h') 
-//             {
-//                 return 1;
-//             }
-//             else return 0;
-//             break;
-//     }
-    
-// }

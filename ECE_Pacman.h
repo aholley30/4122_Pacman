@@ -3,6 +3,8 @@
  * Last Date Modified: 10/26/2020
  * Description: Header file to define ECE_Pacman class
  * */
+#define _USE_MATH_DEFINES
+
 class ECE_Pacman {
     public:
         ECE_Pacman();
@@ -17,6 +19,7 @@ class ECE_Pacman {
         int coinCount = 0;
         int puCount = 0;
         int win = 0;
+        bool openClose = true;
         bool canMove(int key);
         void move();
         //draws PacMan at the x and y coordinates specified by pac

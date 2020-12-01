@@ -1,6 +1,6 @@
 /* Author: Alessandria Holley
  * Class: ECE4122
- * Last Date Modified: 10/29/2020
+ * Last Date Modified: 11/30/2020
  * Description: Implements its like-named header file. Allows Pacman to be drawn
  * */
 #include <GL/glut.h>
@@ -46,7 +46,6 @@ ECE_Pacman::ECE_Pacman() {
 
 //draw Pacman
 void ECE_Pacman::drawPacMan(ECE_Pacman pac) {
-    
     glTranslatef(pac.xx,pac.yy, -1.0);
     glColor3f(1.0, 1.0, 0.0); //yellow
     glPushMatrix();
@@ -136,10 +135,12 @@ void ECE_Pacman::move() {
                 yy-= 1;
                 break;
             case GLUT_KEY_UP:
-                xx-= 1;
+                if (xx - 1 == 11 && yy == 9) break; //pesky wall
+                else xx-= 1;
                 break;
             case GLUT_KEY_DOWN:
-                xx+= 1;
+                if (xx + 1 == 11 && yy == 9) break; 
+                else xx+= 1;
                 break;
             
         }
