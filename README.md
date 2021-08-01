@@ -1,14 +1,12 @@
 # 4122_Pacman
 
-Alessandria Holley
+!["Game screenshot"](4122.png)
 
-OS: Ubuntu 18.04.5 LTS
-Environment: Visual Studio IDE
+OS: Ubuntu 18.04.5 LTS\
+Environment: Visual Studio IDE\
 
-to compile in terminal: g++ -pthread main.cpp ECE_Ghost.cpp ECE_Pacman.cpp -lGL -lglut -lGLU -std=c++1z
-to run: ./a.out
-
-In the second part of the video, the ghosts stay white because they're paused.
+to compile in terminal: g++ -pthread main.cpp ECE_Ghost.cpp ECE_Pacman.cpp -lGL -lglut -lGLU -std=c++1z\
+to run: ./a.out\
 
 Possibly useful interrupts:
 press q/ESC to quit.
