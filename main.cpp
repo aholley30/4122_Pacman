@@ -27,13 +27,11 @@ ECE_Ghost pink = ECE_Ghost('p');
 ECE_Ghost green = ECE_Ghost('g');
 ECE_Ghost orange = ECE_Ghost('o');
 
-
-
 std::vector<ECE_Ghost *> ghosts = {&red, &pink, &green, &orange};
 
 
 int sickTimer = 0;
-int releaseTimer[4] = {0}; //for when ghosts get eaten, each ghost has their own
+//int releaseTimer[4] = {0}; //for when ghosts get eaten, each ghost has their own
 typedef std::pair<int, int> Pair; //makes storing map indices easier
 std::vector<Pair> mW; //missed wall coordinates
 bool vecInit = true; //make sure vector is only initialized once
