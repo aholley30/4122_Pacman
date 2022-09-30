@@ -5,7 +5,7 @@
 OS: Ubuntu 18.04.5 LTS\
 Environment: Visual Studio IDE
 
-to compile in terminal: g++ -pthread main.cpp ECE_Ghost.cpp ECE_Pacman.cpp -lGL -lglut -lGLU -std=c++1z\
+to compile in terminal:g++ -pthread main.cpp ECE_Ghost.cpp ECE_Pacman.cpp map.cpp -lGL -lglut -lGLU -std=c++1z\
 to run: ./a.out
 
 Possibly useful interrupts:\
