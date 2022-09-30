@@ -18,14 +18,29 @@
                    
 
 GLUquadricObj *h = gluNewQuadric();
-//draw red ghost
-void ECE_Ghost::drawRedGhost(ECE_Ghost g) {
+
+void ECE_Ghost::drawGhost(ECE_Ghost g) {
     glTranslatef(g.xx, g.yy, -1.0);
     if(isSick) {
         glColor3f(1.0,1.0,1.0);
     }
     else {
-        glColor3f(1.0, 0.0, 0.0);
+        switch (g.color) {
+            case 'r':
+                glColor3f(1.0, 0.0, 0.0);
+                break;
+            case 'g':
+                glColor3f(44.0/255.0, 166.0/255.0, 152.0/255.0);
+                break;
+            case 'p':
+                glColor3f(1.0, 192.0/255.0, 203.0/255.0);
+                break;
+            case 'o':
+                glColor3f(235.0/255.0, 183.0/255.0, 79.0/255.0);
+                break;
+            default:
+                glColor3f(220.0/255.0, 217.0/255.0, 210.0/255.0);
+        }
     }
     
     glPushMatrix();
@@ -34,58 +49,28 @@ void ECE_Ghost::drawRedGhost(ECE_Ghost g) {
         glutSolidSphere(0.5, 20, 20); 
     glPopMatrix();
 }
-//drw pink ghost
-void ECE_Ghost::drawPinkGhost(ECE_Ghost g) {
-    glTranslatef(g.xx, g.yy, -1.0);
-    if(isSick) {
-        glColor3f(1.0, 1.0, 1.0);
-    }
-    else {
-        glColor3f(1.0, 192.0/255.0, 203.0/255.0);
-    }
-    glPushMatrix();
-        gluCylinder(h,0.5,0.5, 0.5, 20,20);
-        glTranslatef(0.0, 0.0, 0.5);
-        glutSolidSphere(0.5, 20, 20); 
-    glPopMatrix();
-}
-//draw green ghost
-void ECE_Ghost::drawGreenGhost(ECE_Ghost g) {
-    glTranslatef(g.xx, g.yy, -1.0);
-    if(isSick) {
-        glColor3f(1.0, 1.0, 1.0);
-    }
-    else {
-        glColor3f(44.0/255.0, 166.0/255.0, 152.0/255.0);
-    }
-    
-    glPushMatrix();
-        gluCylinder(h,0.5,0.5, 0.5, 20,20);
-        glTranslatef(0.0, 0.0, 0.5);
-        glutSolidSphere(0.5, 20, 20); 
-    glPopMatrix();
-}
-//draw orange ghost
-void ECE_Ghost::drawOrangeGhost(ECE_Ghost g) {
-    glTranslatef(g.xx, g.yy, -1.0);
-    if(isSick) {
-        glColor3f(1.0, 1.0, 1.0);
-    }
-    else {
-        glColor3f(235.0/255.0, 183.0/255.0, 79.0/255.0);
-    }
-    
-    glPushMatrix();
-        gluCylinder(h,0.5,0.5, 0.5, 20,20);
-        glTranslatef(0.0, 0.0, 0.5);
-        glutSolidSphere(0.5, 20, 20); 
-    glPopMatrix();
-}
+
 ECE_Ghost::ECE_Ghost(char color) {
     this->color = color;
     dir = 5;
     couldMove = true;
     firstMove = true;
+    switch (color) {
+        case 'r':
+            limit = 25;
+            break;
+        case 'g':
+            limit = 50;
+            break;
+        case 'p':
+            limit = 100;
+            break;
+        case 'o':
+            limit = 150;
+            break;
+        default:
+            limit = 200;
+    }
 }
 void ECE_Ghost::resetG(){
     xx = x1;
@@ -226,7 +211,19 @@ void ECE_Ghost::cornerHandler()
         int tempDir;
         double distance = 999.0;
         //std::cout << exitCount() << std::endl;
-        if (exitCount() >= 3 ) {
+        if (isDead) {
+            if (releaseTimer >= 50) {
+                isDead = false;
+                wasSick = false;
+                drawnOnce = 0;
+                releaseTimer = 0;
+            }
+            else {
+                releaseTimer++;
+            }
+            return;
+        }
+        else if (exitCount() >= 3 ) {
             if (dir != DOWN && canMove(UP)) {
                 float d = getDistance(xx - 1, yy);
                 //std::cout << "dist going up: " << d << std::endl;

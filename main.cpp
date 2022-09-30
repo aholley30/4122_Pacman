@@ -10,7 +10,6 @@
 #include "map.h"
 #include <iostream>
 #include <string.h>
-#include <thread>
 #include <vector>
 
 int gameState; //0 = running, 1 = over
@@ -22,10 +21,15 @@ ECE_Pacman pac = ECE_Pacman();
 bool allowPause = false; //press x then g to pause ghosts
 bool isSick = false;
 int drawnOnce = 0;
+
 ECE_Ghost red = ECE_Ghost('r');
 ECE_Ghost pink = ECE_Ghost('p');
 ECE_Ghost green = ECE_Ghost('g');
 ECE_Ghost orange = ECE_Ghost('o');
+
+
+
+std::vector<ECE_Ghost *> ghosts = {&red, &pink, &green, &orange};
 
 
 int sickTimer = 0;
@@ -85,10 +89,10 @@ void resetMap() {
     
     ECE_Ghost::pxx = pac.xx;
     ECE_Ghost::pyy = pac.yy;
-    green.resetG();
-    red.resetG();
-    orange.resetG();
-    pink.resetG();
+    for (ECE_Ghost *g: ghosts) {
+        g->resetG();
+    }
+
     isSick = false;
     count = 0;
     countp = 0;
@@ -117,17 +121,16 @@ void update(void)
             if(pac.lifecount > 1) {
                 pac.lifecount--;
                 //std::cout<<"updated lives: " << pac.lifecount <<std::endl;
-                //TODO: only reset pac and ghosts
                 int lives = pac.lifecount;
                 pac = ECE_Pacman();
                 pac.lifecount = lives;
 
                 ECE_Ghost::pxx = pac.xx;
                 ECE_Ghost::pyy = pac.yy;
-                green.resetG();
-                red.resetG();
-                orange.resetG();
-                pink.resetG();
+                for (ECE_Ghost *g: ghosts) {
+                    g->resetG();
+                }
+
                 isSick = false;
                 count = 0;
                 countp = 0;
@@ -146,78 +149,13 @@ void update(void)
         }
 
         
-        std::thread th[4];
         if (enableGhosts) {
-            if (count % 6 == 0) {
-                if (red.isDead) {
-                    releaseTimer[0]++;
-                    if (releaseTimer[0] >= 50) {
-                        red.isDead = false;
-                        red.wasSick = false;
-                        red.drawnOnce = 0;
-                        th[0] = std::thread(&ECE_Ghost::move,std::ref(red));
-                        th[0].join();
-                        releaseTimer[0] = 0;
-                    }
-                }
-                else {
-                    th[0] = std::thread(&ECE_Ghost::move,std::ref(red));
-                    th[0].detach(); 
-                }
+            for (ECE_Ghost *g: ghosts) {
+                if (count % 8  == 0 && count > g->limit)
+                    g->move();
                 
             }
-            if (count >= 50 && count % 7 == 0) {
-                if (green.isDead) {
-                    releaseTimer[1]++;
-                    if(releaseTimer[1] >= 50) {
-                        green.isDead = false;
-                        green.wasSick = false;
-                        green.drawnOnce = 0;
-                        th[1] = std::thread(&ECE_Ghost::move,std::ref(green));
-                        th[1].join();
-                        releaseTimer[1] = 0;
-                    }
-                }
-                else {
-                    th[1] = std::thread(&ECE_Ghost::move,std::ref(green));
-                    th[1].detach();
-                }
-                
-            }
-            if (count >= 100 && count % 8 == 0) {
-                if (pink.isDead) {
-                    releaseTimer[2]++;
-                    if(releaseTimer[2] >= 50) {
-                        pink.isDead = false;
-                        pink.wasSick = false;
-                        pink.drawnOnce = 0;
-                        th[2] = std::thread(&ECE_Ghost::move,std::ref(pink));
-                        th[2].detach();
-                        releaseTimer[2] = 0;
-                    }
-                }
-                else {
-                    th[2] = std::thread(&ECE_Ghost::move,std::ref(pink));
-                    th[2].detach();
-                }
-            }
-            if (count >= 150 && count % 8 == 0) {
-                if (orange.isDead) {
-                    releaseTimer[3]++;
-                    if(releaseTimer[3] >= 50) {
-                        orange.isDead = false;
-                        orange.wasSick = false;
-                        orange.drawnOnce = 0;
-                        th[3] = std::thread(&ECE_Ghost::move,std::ref(orange));
-                        th[3].detach();
-                        releaseTimer[3] = 0;
-                    }
-                }
-                else {
-                    th[3] = std::thread(&ECE_Ghost::move,std::ref(orange));
-                    th[3].detach();
-                }
-            }
+            
             if (isSick) {
                 sickTimer++;
                 //std::cout<<sickTimer<<std::endl;
@@ -229,7 +167,7 @@ void update(void)
             }
         }
         //move pacman
-        if(pac.canMove(pac.dir) && countp % 2 == 0) {
+        if(pac.canMove(pac.dir) && countp % 4 == 0) {
             coinPU();
             pac.move();
             if ((int)round(pac.xx) == 4 && (int)round(pac.yy) >= 10) { //stubborn portal, other is in keyboard func
@@ -496,15 +434,15 @@ void renderScene() {
                 case '6':
                     glPushMatrix();
                     //initialyze position
-                    if (green.drawnOnce == 0) {
-                        green.xx = 15 - row + 0.5;
-                        green.x1 = green.xx;
-                        green.yy = 10 - col;
-                        green.y1 = green.yy;
+                    if (ghosts[2]->drawnOnce == 0) {
+                        ghosts[2]->xx = 15 - row + 0.5;
+                        ghosts[2]->x1 = ghosts[2]->xx;
+                        ghosts[2]->yy = 10 - col;
+                        ghosts[2]->y1 = ghosts[2]->yy;
                     }
-                    if (!green.isDead) {
-                        ECE_Ghost::drawGreenGhost(green);
-                        green.drawnOnce = 1;
+                    if (!ghosts[2]->isDead) {
+                        ECE_Ghost::drawGhost(*ghosts[2]);
+                        ghosts[2]->drawnOnce = 1;
                     }
                     glPopMatrix();
                     break;
@@ -512,15 +450,15 @@ void renderScene() {
                 case '7':
                     glPushMatrix();
                     //glTranslatef(15 - row + 0.5, 10 - col, -1.0);
-                    if (pink.drawnOnce == 0) {
-                        pink.xx = 15 - row + 0.5;
-                        pink.yy = 10 - col;
-                        pink.x1 = pink.xx;
-                        pink.y1 = pink.yy;
+                    if (ghosts[1]->drawnOnce == 0) {
+                        ghosts[1]->xx = 15 - row + 0.5;
+                        ghosts[1]->yy = 10 - col;
+                        ghosts[1]->x1 = ghosts[1]->xx;
+                        ghosts[1]->y1 = ghosts[1]->yy;
                     }
-                    if (!pink.isDead) {
-                        ECE_Ghost::drawPinkGhost(pink);
-                        pink.drawnOnce = 1;
+                    if (!ghosts[1]->isDead) {
+                        ECE_Ghost::drawGhost(*ghosts[1]);
+                        ghosts[1]->drawnOnce = 1;
                     }
                     
                     glPopMatrix();
@@ -528,33 +466,33 @@ void renderScene() {
                     colRed = col;
                     glPushMatrix();
                     //glTranslatef(15 - rowRed - 0.5, 10 - colRed, -1.0);
-                    if (red.drawnOnce == 0) {
-                        red.xx = 15 - rowRed - 0.5;
-                        red.yy = 10 - colRed;
-                        red.x1 = red.xx;
-                        red.y1 = red.yy;
+                    if (ghosts[0]->drawnOnce == 0) {
+                        ghosts[0]->xx = 15 - rowRed - 0.5;
+                        ghosts[0]->yy = 10 - colRed;
+                        ghosts[0]->x1 = ghosts[0]->xx;
+                        ghosts[0]->y1 = ghosts[0]->yy;
                         //std::cout << red.xx << ", " << red.yy << std::endl;
                     }
-                    if (!red.isDead) {
-                        ECE_Ghost::drawRedGhost(red);
+                    if (!ghosts[0]->isDead) {
+                        ECE_Ghost::drawGhost(*ghosts[0]);
                     }
                     
-                    red.drawnOnce = 1;
+                    ghosts[0]->drawnOnce = 1;
                     glPopMatrix();
                     break;
                 //draw orange ghost
                 case '8':
                     glPushMatrix();
                     //glTranslatef(15 - row + 0.5, 10 - col, -1.0);
-                    if (orange.drawnOnce == 0) {
-                        orange.xx = 15 - row + 0.5;
-                        orange.yy = 10 - col;
-                        orange.x1 = orange.xx;
-                        orange.y1 = orange.yy;
+                    if (ghosts[3]->drawnOnce == 0) {
+                        ghosts[3]->xx = 15 - row + 0.5;
+                        ghosts[3]->yy = 10 - col;
+                        ghosts[3]->x1 = ghosts[3]->xx;
+                        ghosts[3]->y1 = ghosts[3]->yy;
                     }
-                    if (!orange.isDead) {
-                        ECE_Ghost::drawOrangeGhost(orange);
-                        orange.drawnOnce = 1;
+                    if (!ghosts[3]->isDead) {
+                        ECE_Ghost::drawGhost(*ghosts[3]);
+                        ghosts[3]->drawnOnce = 1;
                     }
                     glPopMatrix();
                     break;

@@ -26,12 +26,15 @@ class ECE_Ghost {
         //if a ghost was sick before being redraw, it needs to wait 5 sec
         bool wasSick; 
         bool isDead = false;
+        int releaseTimer = 0;
+        int limit;
         //pacman's coordinates, updated in main
         inline static int pxx = 10;
         inline static int pyy = 0;
         //0 = running, 1 = over
         inline static int gameState = 0;
         char color;
+        
         //draw coordinates according to map array once, then position might change
         int drawnOnce = 0;
         //contructor
@@ -45,11 +48,9 @@ class ECE_Ghost {
         void cornerHandler();
         bool isUnique(Pair p, std::vector<Pair> vec);
         void move();
-        
-        static void drawRedGhost(ECE_Ghost g);
-        static void drawPinkGhost(ECE_Ghost g);
-        static void drawGreenGhost(ECE_Ghost g);
-        static void drawOrangeGhost(ECE_Ghost g);
+
+        static void drawGhost(ECE_Ghost g);
+
         //static int canMove(int key, ECE_Ghost g, char map[22][19]);
         //static void updateMove(ECE_Ghost &g, int x, int y, std::vector<Pair> &vec);
         
