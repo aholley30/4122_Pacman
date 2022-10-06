@@ -49,7 +49,8 @@ class ECE_Ghost {
         bool isUnique(Pair p, std::vector<Pair> vec);
         void move();
 
-        static void drawGhost(ECE_Ghost g);
+        void drawGhost();
+        void initGhost(int row, int col);
 
         //static int canMove(int key, ECE_Ghost g, char map[22][19]);
         //static void updateMove(ECE_Ghost &g, int x, int y, std::vector<Pair> &vec);

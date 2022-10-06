@@ -11,11 +11,13 @@
 #include <iostream>
 #include <string.h>
 #include <vector>
+#include <thread>
 
 int gameState; //0 = running, 1 = over
 int count = 0; //to count iterations, alternative to making threads sleep
 #define ESC 27
 
+bool flag = true;
 
 ECE_Pacman pac = ECE_Pacman();
 bool allowPause = false; //press x then g to pause ghosts
@@ -137,9 +139,11 @@ void update(void)
                 gameState = 0;
                 ECE_Ghost::gameState = 0;
                 pac.gamseState = 0;
+                glutPostRedisplay();
             }
             else {
                 pac.gamseState = 1;
+                glutPostRedisplay();
                 //gameState = 1;
                 //ECE_Ghost::gameState = 1;
             }
@@ -183,9 +187,17 @@ void update(void)
        if (enableGhosts) count++;
     }
     countp++;
+
+    if (count >= std::numeric_limits<int>::max() - 100) {
+        count = 250;
+    }
+    if (countp >= std::numeric_limits<int>::max() - 100) {
+        countp = 250;
+    }
     //std::cout<<"current pos: " << pac.xx << ", " << pac.yy << std::endl;
-    glutPostRedisplay(); // redisplay everything
+    //glutPostRedisplay(); // redisplay everything
 }
+
 bool isUnique(Pair p, std::vector<Pair> vec) {
     if (vec.empty()) return true;
     for (int i = 0; i < vec.size(); i++) {
@@ -432,66 +444,29 @@ void renderScene() {
                 case '6':
                     glPushMatrix();
                     //initialyze position
-                    if (ghosts[2]->drawnOnce == 0) {
-                        ghosts[2]->xx = 15 - row + 0.5;
-                        ghosts[2]->x1 = ghosts[2]->xx;
-                        ghosts[2]->yy = 10 - col;
-                        ghosts[2]->y1 = ghosts[2]->yy;
-                    }
-                    if (!ghosts[2]->isDead) {
-                        ECE_Ghost::drawGhost(*ghosts[2]);
-                        ghosts[2]->drawnOnce = 1;
-                    }
+                    ghosts[2]->initGhost(row, col);
                     glPopMatrix();
                     break;
                 //draw Pink and Red ghosts
                 case '7':
                     glPushMatrix();
                     //glTranslatef(15 - row + 0.5, 10 - col, -1.0);
-                    if (ghosts[1]->drawnOnce == 0) {
-                        ghosts[1]->xx = 15 - row + 0.5;
-                        ghosts[1]->yy = 10 - col;
-                        ghosts[1]->x1 = ghosts[1]->xx;
-                        ghosts[1]->y1 = ghosts[1]->yy;
-                    }
-                    if (!ghosts[1]->isDead) {
-                        ECE_Ghost::drawGhost(*ghosts[1]);
-                        ghosts[1]->drawnOnce = 1;
-                    }
-                    
+                    ghosts[1]->initGhost(row, col);
                     glPopMatrix();
+
                     rowRed = row;
                     colRed = col;
                     glPushMatrix();
                     //glTranslatef(15 - rowRed - 0.5, 10 - colRed, -1.0);
-                    if (ghosts[0]->drawnOnce == 0) {
-                        ghosts[0]->xx = 15 - rowRed - 0.5;
-                        ghosts[0]->yy = 10 - colRed;
-                        ghosts[0]->x1 = ghosts[0]->xx;
-                        ghosts[0]->y1 = ghosts[0]->yy;
-                        //std::cout << red.xx << ", " << red.yy << std::endl;
-                    }
-                    if (!ghosts[0]->isDead) {
-                        ECE_Ghost::drawGhost(*ghosts[0]);
-                    }
-                    
-                    ghosts[0]->drawnOnce = 1;
+                    ghosts[0]->initGhost(rowRed, colRed);
+                    //std::cout << red.xx << ", " << red.yy << std::endl;
                     glPopMatrix();
                     break;
                 //draw orange ghost
                 case '8':
                     glPushMatrix();
                     //glTranslatef(15 - row + 0.5, 10 - col, -1.0);
-                    if (ghosts[3]->drawnOnce == 0) {
-                        ghosts[3]->xx = 15 - row + 0.5;
-                        ghosts[3]->yy = 10 - col;
-                        ghosts[3]->x1 = ghosts[3]->xx;
-                        ghosts[3]->y1 = ghosts[3]->yy;
-                    }
-                    if (!ghosts[3]->isDead) {
-                        ECE_Ghost::drawGhost(*ghosts[3]);
-                        ghosts[3]->drawnOnce = 1;
-                    }
+                    ghosts[3]->initGhost(row, col);
                     glPopMatrix();
                     break;
                 }
@@ -687,6 +662,20 @@ void pressSpecialKey(int key, int xx, int yy)
     
 }
 
+void thread_timer() {
+    while (true) {
+        if (flag)
+        {
+            update();
+            glutPostRedisplay();
+            flag = false;
+        }
+        else {
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            flag = true;
+        }
+    }
+}
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
@@ -697,7 +686,8 @@ int main(int argc, char **argv) {
     init();
     glutReshapeFunc(changeSize); // window reshape callback
     glutDisplayFunc(renderScene); // (re)display callback
-    glutIdleFunc(update); // incremental update
+    std::thread incr_update(thread_timer);
+    //glutIdleFunc(display); // incremental update
     glutKeyboardFunc(processNormalKeys); // process standard key clicks
     glutSpecialFunc(pressSpecialKey); // process special key pressed
 

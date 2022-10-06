@@ -19,13 +19,13 @@
 
 GLUquadricObj *h = gluNewQuadric();
 
-void ECE_Ghost::drawGhost(ECE_Ghost g) {
-    glTranslatef(g.xx, g.yy, -1.0);
+void ECE_Ghost::drawGhost() {
+    glTranslatef(xx, yy, -1.0);
     if(isSick) {
         glColor3f(1.0,1.0,1.0);
     }
     else {
-        switch (g.color) {
+        switch (color) {
             case 'r':
                 glColor3f(1.0, 0.0, 0.0);
                 break;
@@ -48,6 +48,31 @@ void ECE_Ghost::drawGhost(ECE_Ghost g) {
         glTranslatef(0.0, 0.0, 0.5); //move sphere so that it's on top of cylinder
         glutSolidSphere(0.5, 20, 20); 
     glPopMatrix();
+}
+
+void ECE_Ghost::initGhost(int row, int col) {
+    if (drawnOnce == 0) {
+        switch (color) {
+            case 'r':
+                xx = 15 - row - 0.5;
+                x1 = xx;
+                yy = 10 - col;
+                y1 = yy;
+                break;
+            default:
+                xx = 15 - row + 0.5;
+                x1 = xx;
+                yy = 10 - col;
+                y1 = yy;
+                break;
+            
+        }
+        drawnOnce = 1;
+    }
+    if (!isDead) {
+        drawnOnce = 1;
+        drawGhost();
+    }
 }
 
 ECE_Ghost::ECE_Ghost(char color) {
