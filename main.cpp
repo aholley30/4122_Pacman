@@ -17,7 +17,7 @@ int gameState; //0 = running, 1 = over
 int count = 0; //to count iterations, alternative to making threads sleep
 #define ESC 27
 
-bool flag = true;
+bool updateRequired = true;
 
 ECE_Pacman pac = ECE_Pacman();
 bool allowPause = false; //press x then g to pause ghosts
@@ -153,7 +153,7 @@ void update(void)
         
         if (enableGhosts) {
             for (ECE_Ghost *g: ghosts) {
-                if (count % 8  == 0 && count > g->limit)
+                if (count % 6  == 0 && count > g->limit)
                     g->move();
                 
             }
@@ -169,7 +169,7 @@ void update(void)
             }
         }
         //move pacman
-        if(pac.canMove(pac.dir) && countp % 4 == 0) {
+        if(pac.canMove(pac.dir) && countp % 2 == 0) {
             coinPU();
             pac.move();
             if ((int)round(pac.xx) == 4 && (int)round(pac.yy) >= 10) { //stubborn portal, other is in keyboard func
@@ -664,15 +664,15 @@ void pressSpecialKey(int key, int xx, int yy)
 
 void thread_timer() {
     while (true) {
-        if (flag)
+        if (updateRequired)
         {
             update();
             glutPostRedisplay();
-            flag = false;
+            updateRequired = false;
         }
         else {
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
-            flag = true;
+            updateRequired = true;
         }
     }
 }
