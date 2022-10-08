@@ -53,6 +53,8 @@ int countp = 0;
 int isDragging = 0; //  true when dragging
 int xDragStart = 0; // records the x-coordinate when dragging starts
 
+int updateCount = 0;
+
 // Camera direction
 float lx = 0.0, ly = 0.0; // camera points initially along y-axis
 
@@ -103,15 +105,22 @@ void resetMap() {
 
 //update the display
 void update(void)
-{   
-    
-    if (pac.coinCount >= 152 && pac.puCount == 4) {
+{
+    if (!updateRequired)
+        return;
+
+    updateRequired = false;
+    //std::cout << pac.coinCount << " and " << pac.puCount << std::endl;
+    if (pac.coinCount >= 152 && pac.puCount == 4)
+    {
+        std::cout << "here" << std::endl;
         resetMap();
         pac.gamseState = 1;
         gameState = 1;
         pac.win = 1;
-    } 
-    
+        updateRequired = true;
+    }
+
     else {
 
         ECE_Ghost::pxx = pac.xx;
@@ -139,11 +148,11 @@ void update(void)
                 gameState = 0;
                 ECE_Ghost::gameState = 0;
                 pac.gamseState = 0;
-                glutPostRedisplay();
+                //glutPostRedisplay();
             }
             else {
                 pac.gamseState = 1;
-                glutPostRedisplay();
+                //glutPostRedisplay();
                 //gameState = 1;
                 //ECE_Ghost::gameState = 1;
             }
@@ -195,7 +204,7 @@ void update(void)
         countp = 250;
     }
     //std::cout<<"current pos: " << pac.xx << ", " << pac.yy << std::endl;
-    //glutPostRedisplay(); // redisplay everything
+    glutPostRedisplay(); // redisplay everything
 }
 
 bool isUnique(Pair p, std::vector<Pair> vec) {
@@ -664,16 +673,12 @@ void pressSpecialKey(int key, int xx, int yy)
 
 void thread_timer() {
     while (true) {
-        if (updateRequired)
-        {
-            update();
-            glutPostRedisplay();
-            updateRequired = false;
-        }
-        else {
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
-            updateRequired = true;
-        }
+        
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(40));
+        updateRequired = true;
+        //std::cout << updateCount << std::endl;
+        //updateCount = 0;
     }
 }
 
@@ -687,7 +692,7 @@ int main(int argc, char **argv) {
     glutReshapeFunc(changeSize); // window reshape callback
     glutDisplayFunc(renderScene); // (re)display callback
     std::thread incr_update(thread_timer);
-    //glutIdleFunc(display); // incremental update
+    glutIdleFunc(update); // incremental update
     glutKeyboardFunc(processNormalKeys); // process standard key clicks
     glutSpecialFunc(pressSpecialKey); // process special key pressed
 
