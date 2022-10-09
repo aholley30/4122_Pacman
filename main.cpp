@@ -42,7 +42,7 @@ GLUquadricObj *d = gluNewQuadric();
 GLUquadricObj *p = gluNewQuadric();
 //gluQuadricDrawStyle(GLU_SMOOTH);
 // Camera position
-float x = 30.0, y = 15.0, z = 15.0; // 33 ,10 , 15
+float x = 30.0, y = 15.0, z = 15.0; // 30 ,15 , 15
 float z_angle = 0.0;
 float deltaMove = 0.0; // initially camera doesn't move
 //static float g_lightPos[4] = {-95.0, 10.0, 5.0, 10.0 };  // added: Position of light
@@ -56,7 +56,7 @@ int xDragStart = 0; // records the x-coordinate when dragging starts
 int updateCount = 0;
 
 // Camera direction
-float lx = 0.0, ly = 0.0; // camera points initially along y-axis
+float lx = 10.0, ly = 2.75; // camera points initially along y-axis 0,0
 
 void coinPU() {
     if (map1[15-(int)round(pac.xx)][10-(int)round(pac.yy)] == 'c') {
@@ -113,7 +113,7 @@ void update(void)
     //std::cout << pac.coinCount << " and " << pac.puCount << std::endl;
     if (pac.coinCount >= 152 && pac.puCount == 4)
     {
-        std::cout << "here" << std::endl;
+        //std::cout << "here" << std::endl;
         resetMap();
         pac.gamseState = 1;
         gameState = 1;
@@ -131,8 +131,12 @@ void update(void)
                 pac.lifecount--;
                 //std::cout<<"updated lives: " << pac.lifecount <<std::endl;
                 int lives = pac.lifecount;
+                int coins = pac.coinCount;
+                int pu = pac.puCount;
                 pac = ECE_Pacman();
                 pac.lifecount = lives;
+                pac.coinCount = coins;
+                pac.puCount = pu;
 
                 ECE_Ghost::pxx = pac.xx;
                 ECE_Ghost::pyy = pac.yy;
@@ -191,6 +195,7 @@ void update(void)
        if(ECE_Ghost::gameState == 1) {
            pac.gamseState = 1;
            gameState = 1;
+           updateRequired = true;
        }
 
        if (enableGhosts) count++;
@@ -491,7 +496,7 @@ void renderScene() {
         char myArray[disp.size()+1];//as 1 char space for null is also required
         strcpy(myArray, disp.c_str());
         //std::cout <<myArray <<std::endl;
-        drawString(15,-10,10,myArray);
+        drawString(21,8,1,myArray);
         glPopMatrix();
         
     }
@@ -501,13 +506,13 @@ void renderScene() {
         glColor3f(1.0, 1.0, 1.0);
         if (pac.win == 1) {
             char string[20] = "Game Over. You won!";
-            drawString(0,0,1,string);
+            drawString(10,0,1,string);
         } else {
             char string[23] = "Game Over. You lost :(";
-            drawString(0,0,1,string);
+            drawString(10,0,1,string);
         }
         char string2[] = "press p to play again";
-        drawString(7,4,1,string2);
+        drawString(15,4,1,string2);
         
        
         
@@ -552,6 +557,7 @@ void processNormalKeys(unsigned char key, int xx, int yy)
     else if (key == 'm') {
         std::cout << "pacman grid: " << pac.xx << ", " << pac.yy <<std::endl;
         std::cout << "pacman map: " <<15 - pac.xx << ", " << 10 - pac.yy <<std::endl;
+        std::cout << "pacman won? " << pac.win << std::endl;
         //std::cout << "red: " << red.xx << ", " << red.yy <<std::endl;
     }
     else if (key == 'x') {
@@ -686,7 +692,7 @@ int main(int argc, char **argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_RGB);
     glutInitWindowPosition(100, 1);
-    glutInitWindowSize(1600, 800);
+    glutInitWindowSize(1000, 1000);
     glutCreateWindow("ECE 4122 Pacman");
     init();
     glutReshapeFunc(changeSize); // window reshape callback
