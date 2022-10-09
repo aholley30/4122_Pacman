@@ -44,14 +44,14 @@ GLUquadricObj *p = gluNewQuadric();
 // Camera position
 float x = 30.0, y = 15.0, z = 15.0; // 30 ,15 , 15
 float z_angle = 0.0;
-float deltaMove = 0.0; // initially camera doesn't move
+//float deltaMove = 0.0; // initially camera doesn't move
 //static float g_lightPos[4] = {-95.0, 10.0, 5.0, 10.0 };  // added: Position of light
 //std::thread t1;
 bool enableGhosts = false;
 int countp = 0;
 // Mouse drag control
-int isDragging = 0; //  true when dragging
-int xDragStart = 0; // records the x-coordinate when dragging starts
+//int isDragging = 0; //  true when dragging
+//int xDragStart = 0; // records the x-coordinate when dragging starts
 
 int updateCount = 0;
 
