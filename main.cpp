@@ -1,6 +1,6 @@
 /* Author: Alessandria Holley
  * Class: ECE4122
- * Last Date Modified: 09/28/2022
+ * Last Date Modified: 10/09/2022
  * Description: Draws a static, 3d representation of a pacman game using OpenGl
  * */
 #include "ECE_Pacman.h"
