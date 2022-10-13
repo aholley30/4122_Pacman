@@ -1,15 +1,17 @@
 #include <utility>
 #include <thread>
 #include <vector>
+#include <memory>
 /* Author: Alessandria Holley
  * Class: ECE4122
  * Last Date Modified: 10/26/2020
  * Description: Header file to define ghost class
  * */
 //#pragma once
-typedef std::pair<int, int> Pair;
+using namespace std;
+typedef pair<int, int> Pair;
 extern bool isSick;
-extern std::vector<Pair> mW;
+extern vector<Pair> mW;
 //extern int gameState;
 class ECE_Ghost {
 
@@ -34,7 +36,8 @@ class ECE_Ghost {
         //0 = running, 1 = over
         inline static int gameState = 0;
         char color;
-        
+        static unique_ptr<ECE_Ghost> ghosts[4];
+
         //draw coordinates according to map array once, then position might change
         int drawnOnce = 0;
         //contructor
@@ -42,13 +45,13 @@ class ECE_Ghost {
         //reset ghost positions
         void resetG();
         int exitCount();
-        int updateMove(std::vector<Pair> &vec);
+        int updateMove(vector<Pair> &vec);
         bool canMove(int dir2);
         double getDistance(int x, int y);
         void cornerHandler();
-        bool isUnique(Pair p, std::vector<Pair> vec);
+        bool isUnique(Pair p, vector<Pair> vec);
         void move();
-
+        //static std::vector<std::unique_ptr<ECE_Ghost>> ghostVec();
         void drawGhost();
         void initGhost(int row, int col);
 

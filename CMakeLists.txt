@@ -11,6 +11,8 @@ add_executable(Lab_4
         ECE_Ghost.h
         ECE_Pacman.cpp
         ECE_Pacman.h
-        dij.h
         main.cpp
+        periodicTimer.h
+        periodicTimer.cpp
+        map.cpp
         map.h)

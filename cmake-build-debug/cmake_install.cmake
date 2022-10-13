@@ -1,4 +1,4 @@
-# Install script for directory: /home/allie/Documents/ECE4122/Lab 4
+# Install script for directory: /home/allie/Documents/ECE4122/Final
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/allie/Documents/ECE4122/Final/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

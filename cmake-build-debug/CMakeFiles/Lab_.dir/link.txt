@@ -1,1 +1,0 @@
-/usr/bin/g++  -g   CMakeFiles/Lab_.dir/ECE_Ghost.cpp.o CMakeFiles/Lab_.dir/ECE_Pacman.cpp.o CMakeFiles/Lab_.dir/main.cpp.o  -o Lab_ 

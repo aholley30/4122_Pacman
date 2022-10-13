@@ -43,10 +43,10 @@ RM = /home/allie/Downloads/clion-2019.3.5/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/allie/Documents/ECE4122/Lab 4"
+CMAKE_SOURCE_DIR = /home/allie/Documents/ECE4122/Final
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug"
+CMAKE_BINARY_DIR = /home/allie/Documents/ECE4122/Final/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Lab_4.dir/depend.make
@@ -59,48 +59,76 @@ include CMakeFiles/Lab_4.dir/flags.make
 
 CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o: CMakeFiles/Lab_4.dir/flags.make
 CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o: ../ECE_Ghost.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o -c "/home/allie/Documents/ECE4122/Lab 4/ECE_Ghost.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o -c /home/allie/Documents/ECE4122/Final/ECE_Ghost.cpp
 
 CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/allie/Documents/ECE4122/Lab 4/ECE_Ghost.cpp" > CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/allie/Documents/ECE4122/Final/ECE_Ghost.cpp > CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.i
 
 CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/allie/Documents/ECE4122/Lab 4/ECE_Ghost.cpp" -o CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/allie/Documents/ECE4122/Final/ECE_Ghost.cpp -o CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.s
 
 CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o: CMakeFiles/Lab_4.dir/flags.make
 CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o: ../ECE_Pacman.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o -c "/home/allie/Documents/ECE4122/Lab 4/ECE_Pacman.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o -c /home/allie/Documents/ECE4122/Final/ECE_Pacman.cpp
 
 CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/allie/Documents/ECE4122/Lab 4/ECE_Pacman.cpp" > CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/allie/Documents/ECE4122/Final/ECE_Pacman.cpp > CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.i
 
 CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/allie/Documents/ECE4122/Lab 4/ECE_Pacman.cpp" -o CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/allie/Documents/ECE4122/Final/ECE_Pacman.cpp -o CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.s
 
 CMakeFiles/Lab_4.dir/main.cpp.o: CMakeFiles/Lab_4.dir/flags.make
 CMakeFiles/Lab_4.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Lab_4.dir/main.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/main.cpp.o -c "/home/allie/Documents/ECE4122/Lab 4/main.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Lab_4.dir/main.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/main.cpp.o -c /home/allie/Documents/ECE4122/Final/main.cpp
 
 CMakeFiles/Lab_4.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Lab_4.dir/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/allie/Documents/ECE4122/Lab 4/main.cpp" > CMakeFiles/Lab_4.dir/main.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/allie/Documents/ECE4122/Final/main.cpp > CMakeFiles/Lab_4.dir/main.cpp.i
 
 CMakeFiles/Lab_4.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Lab_4.dir/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/allie/Documents/ECE4122/Lab 4/main.cpp" -o CMakeFiles/Lab_4.dir/main.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/allie/Documents/ECE4122/Final/main.cpp -o CMakeFiles/Lab_4.dir/main.cpp.s
+
+CMakeFiles/Lab_4.dir/periodicTimer.cpp.o: CMakeFiles/Lab_4.dir/flags.make
+CMakeFiles/Lab_4.dir/periodicTimer.cpp.o: ../periodicTimer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Lab_4.dir/periodicTimer.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/periodicTimer.cpp.o -c /home/allie/Documents/ECE4122/Final/periodicTimer.cpp
+
+CMakeFiles/Lab_4.dir/periodicTimer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Lab_4.dir/periodicTimer.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/allie/Documents/ECE4122/Final/periodicTimer.cpp > CMakeFiles/Lab_4.dir/periodicTimer.cpp.i
+
+CMakeFiles/Lab_4.dir/periodicTimer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Lab_4.dir/periodicTimer.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/allie/Documents/ECE4122/Final/periodicTimer.cpp -o CMakeFiles/Lab_4.dir/periodicTimer.cpp.s
+
+CMakeFiles/Lab_4.dir/map.cpp.o: CMakeFiles/Lab_4.dir/flags.make
+CMakeFiles/Lab_4.dir/map.cpp.o: ../map.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Lab_4.dir/map.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Lab_4.dir/map.cpp.o -c /home/allie/Documents/ECE4122/Final/map.cpp
+
+CMakeFiles/Lab_4.dir/map.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Lab_4.dir/map.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/allie/Documents/ECE4122/Final/map.cpp > CMakeFiles/Lab_4.dir/map.cpp.i
+
+CMakeFiles/Lab_4.dir/map.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Lab_4.dir/map.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/allie/Documents/ECE4122/Final/map.cpp -o CMakeFiles/Lab_4.dir/map.cpp.s
 
 # Object files for target Lab_4
 Lab_4_OBJECTS = \
 "CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o" \
 "CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o" \
-"CMakeFiles/Lab_4.dir/main.cpp.o"
+"CMakeFiles/Lab_4.dir/main.cpp.o" \
+"CMakeFiles/Lab_4.dir/periodicTimer.cpp.o" \
+"CMakeFiles/Lab_4.dir/map.cpp.o"
 
 # External object files for target Lab_4
 Lab_4_EXTERNAL_OBJECTS =
@@ -108,9 +136,11 @@ Lab_4_EXTERNAL_OBJECTS =
 Lab_4: CMakeFiles/Lab_4.dir/ECE_Ghost.cpp.o
 Lab_4: CMakeFiles/Lab_4.dir/ECE_Pacman.cpp.o
 Lab_4: CMakeFiles/Lab_4.dir/main.cpp.o
+Lab_4: CMakeFiles/Lab_4.dir/periodicTimer.cpp.o
+Lab_4: CMakeFiles/Lab_4.dir/map.cpp.o
 Lab_4: CMakeFiles/Lab_4.dir/build.make
 Lab_4: CMakeFiles/Lab_4.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Lab_4"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable Lab_4"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Lab_4.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -123,6 +153,6 @@ CMakeFiles/Lab_4.dir/clean:
 .PHONY : CMakeFiles/Lab_4.dir/clean
 
 CMakeFiles/Lab_4.dir/depend:
-	cd "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/allie/Documents/ECE4122/Lab 4" "/home/allie/Documents/ECE4122/Lab 4" "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug" "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug" "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles/Lab_4.dir/DependInfo.cmake" --color=$(COLOR)
+	cd /home/allie/Documents/ECE4122/Final/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/allie/Documents/ECE4122/Final /home/allie/Documents/ECE4122/Final /home/allie/Documents/ECE4122/Final/cmake-build-debug /home/allie/Documents/ECE4122/Final/cmake-build-debug /home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles/Lab_4.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Lab_4.dir/depend
 

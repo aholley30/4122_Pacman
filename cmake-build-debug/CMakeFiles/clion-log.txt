@@ -1,4 +1,4 @@
-/home/allie/Downloads/clion-2019.3.5/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" "/home/allie/Documents/ECE4122/Lab 4"
+/home/allie/Downloads/clion-2019.3.5/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /home/allie/Documents/ECE4122/Final
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/allie/Documents/ECE4122/Lab 4/cmake-build-debug
+-- Build files have been written to: /home/allie/Documents/ECE4122/Final/cmake-build-debug

@@ -97,6 +97,12 @@ ECE_Ghost::ECE_Ghost(char color) {
             limit = 200;
     }
 }
+
+// std::vector<std::unique_ptr<ECE_Ghost>> ECE_Ghost::ghostVec() {
+
+//     return {std::unique_ptr<ECE_Ghost>(new ECE_Ghost('r')), std::unique_ptr<ECE_Ghost>(new ECE_Ghost('p')), std::unique_ptr<ECE_Ghost>(new ECE_Ghost('g')), std::unique_ptr<ECE_Ghost>(new ECE_Ghost('o'))};
+// }
+
 void ECE_Ghost::resetG(){
     xx = x1;
     yy = y1;

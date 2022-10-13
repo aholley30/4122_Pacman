@@ -48,10 +48,10 @@ RM = /home/allie/Downloads/clion-2019.3.5/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/allie/Documents/ECE4122/Lab 4"
+CMAKE_SOURCE_DIR = /home/allie/Documents/ECE4122/Final
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug"
+CMAKE_BINARY_DIR = /home/allie/Documents/ECE4122/Final/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles" "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles /home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/allie/Documents/ECE4122/Lab 4/cmake-build-debug/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/allie/Documents/ECE4122/Final/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -204,6 +204,60 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/Lab_4.dir/build.make CMakeFiles/Lab_4.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+map.o: map.cpp.o
+
+.PHONY : map.o
+
+# target to build an object file
+map.cpp.o:
+	$(MAKE) -f CMakeFiles/Lab_4.dir/build.make CMakeFiles/Lab_4.dir/map.cpp.o
+.PHONY : map.cpp.o
+
+map.i: map.cpp.i
+
+.PHONY : map.i
+
+# target to preprocess a source file
+map.cpp.i:
+	$(MAKE) -f CMakeFiles/Lab_4.dir/build.make CMakeFiles/Lab_4.dir/map.cpp.i
+.PHONY : map.cpp.i
+
+map.s: map.cpp.s
+
+.PHONY : map.s
+
+# target to generate assembly for a file
+map.cpp.s:
+	$(MAKE) -f CMakeFiles/Lab_4.dir/build.make CMakeFiles/Lab_4.dir/map.cpp.s
+.PHONY : map.cpp.s
+
+periodicTimer.o: periodicTimer.cpp.o
+
+.PHONY : periodicTimer.o
+
+# target to build an object file
+periodicTimer.cpp.o:
+	$(MAKE) -f CMakeFiles/Lab_4.dir/build.make CMakeFiles/Lab_4.dir/periodicTimer.cpp.o
+.PHONY : periodicTimer.cpp.o
+
+periodicTimer.i: periodicTimer.cpp.i
+
+.PHONY : periodicTimer.i
+
+# target to preprocess a source file
+periodicTimer.cpp.i:
+	$(MAKE) -f CMakeFiles/Lab_4.dir/build.make CMakeFiles/Lab_4.dir/periodicTimer.cpp.i
+.PHONY : periodicTimer.cpp.i
+
+periodicTimer.s: periodicTimer.cpp.s
+
+.PHONY : periodicTimer.s
+
+# target to generate assembly for a file
+periodicTimer.cpp.s:
+	$(MAKE) -f CMakeFiles/Lab_4.dir/build.make CMakeFiles/Lab_4.dir/periodicTimer.cpp.s
+.PHONY : periodicTimer.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -222,6 +276,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... map.o"
+	@echo "... map.i"
+	@echo "... map.s"
+	@echo "... periodicTimer.o"
+	@echo "... periodicTimer.i"
+	@echo "... periodicTimer.s"
 .PHONY : help
 
 
