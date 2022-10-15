@@ -3,18 +3,15 @@
 #include <iostream>
 #include "periodicTimer.h"
 
+periodicTimer::periodicTimer() :_execute(true) {}
 
-
-periodicTimer::periodicTimer(int interval, std::function<void()> func) : _execute(true)
+void periodicTimer::start(int interval, std::function<void()> func)
     {
-        //std::cout << "ran2"<<std::endl;
         m_pThread = std::make_unique<std::thread>([this, interval, func]()
         {
-            //std::cout << "ran3"<<std::endl;
             while (_execute.load(std::memory_order_acquire))
             {
             func();
-            //std::cout << "ran4"<<std::endl;
             std::this_thread::sleep_for(std::chrono::milliseconds(interval));
             }
         });

@@ -6,7 +6,8 @@ class periodicTimer
 {
 public:
     //bool updateRequired;
-    periodicTimer(int interval, std::function<void()> func);
+    periodicTimer();
+    void start(int interval, std::function<void()> func);
 
     ~periodicTimer();
 

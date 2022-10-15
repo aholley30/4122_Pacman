@@ -20,6 +20,8 @@ int count1 = 0; //to count iterations, alternative to making threads sleep
 
 bool updateRequired = true;
 
+periodicTimer timer;
+
 ECE_Pacman pac = ECE_Pacman();
 bool allowPause = false; //press x then g to pause ghosts
 bool isSick = false;
@@ -718,9 +720,10 @@ int main(int argc, char **argv) {
     glutDisplayFunc(renderScene); // (re)display callback
     //std::thread incr_update(thread_timer);
     glutIdleFunc(update);
-    periodicTimer(40, []()
-                  { updateRequired = true;});
-    // periodicTimer(40, thread_timer);
+    
+    //timer.start(40, []()
+    //              { updateRequired = true; });
+    timer.start(40, thread_timer);
                  // incremental update
     glutKeyboardFunc(processNormalKeys); // process standard key clicks
     glutSpecialFunc(pressSpecialKey); // process special key pressed
