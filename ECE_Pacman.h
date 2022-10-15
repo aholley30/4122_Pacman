@@ -1,11 +1,15 @@
+#ifndef ECE_PACMAN
+#define ECE_PACMAN
+
+#include "gamePiece.h"
 /* Author: Alessandria Holley
  * Class: ECE4122
  * Last Date Modified: 10/26/2020
  * Description: Header file to define ECE_Pacman class
  * */
+//#pragma once
 
-
-class ECE_Pacman {
+class ECE_Pacman : public gamePiece {
     public:
         ECE_Pacman();
         //0 = normal, 1 = over
@@ -23,7 +27,7 @@ class ECE_Pacman {
         bool canMove(int key);
         void move();
         //draws PacMan at the x and y coordinates specified by pac
-        static void drawPacMan(ECE_Pacman pac);
+        void draw();
         //returns 1 if pacman can move there, 0 if he can't
         //static int canMove(int key, char map[22][19], ECE_Pacman pac); 
         //checks if there's a coin or power up at pacman's location
@@ -31,3 +35,5 @@ class ECE_Pacman {
         // static void move(ECE_Pacman &pac);
 
 };
+
+#endif

@@ -18,27 +18,17 @@ int gameState; //0 = running, 1 = over
 int count1 = 0; //to count iterations, alternative to making threads sleep
 #define ESC 27
 
-//bool updateRequired = true;
+bool updateRequired = true;
 
 ECE_Pacman pac = ECE_Pacman();
 bool allowPause = false; //press x then g to pause ghosts
 bool isSick = false;
 int drawnOnce = 0;
 
-// ECE_Ghost red = ECE_Ghost('r');
-// ECE_Ghost pink = ECE_Ghost('p');
-// ECE_Ghost green = ECE_Ghost('g');
-// ECE_Ghost orange = ECE_Ghost('o');
 
-std::unique_ptr<ECE_Ghost> red(new ECE_Ghost('r'));
-std::unique_ptr<ECE_Ghost> pink(new ECE_Ghost('p'));
-std::unique_ptr<ECE_Ghost> green(new ECE_Ghost('g'));
-std::unique_ptr<ECE_Ghost> orange(new ECE_Ghost('o'));
+std::vector<std::unique_ptr<ECE_Ghost>> ghosts;
+int numGhosts = 4;
 
-//std::vector<std::unique_ptr<ECE_Ghost>> ghosts = ECE_Ghost::ghostVec();
- std::unique_ptr<ECE_Ghost> ECE_Ghost::ghosts[4] = {std::move(red), std::move(pink), std::move(green), std::move(orange)};
-
-//std::vector<ECE_Ghost *> ghosts = {&red, &pink, &green, &orange};
 
 
 int sickTimer = 0;
@@ -103,7 +93,7 @@ void resetMap() {
     ECE_Ghost::pyy = pac.yy;
 
     for (int i = 0; i < 4; i++) {
-        ECE_Ghost::ghosts[i]->resetG();
+        ghosts[i]->resetG();
     }
 
 
@@ -118,12 +108,12 @@ void resetMap() {
 //update the display
 void update(void)
 {
-    // if (!periodicTimer::updateRequired) {
-    //     //std::cout << "h" << std::endl;
-    //     return;
-    // }
+    if (!updateRequired) {
+        //std::cout << "h" << std::endl;
+        return;
+    }
 
-    //updateRequired = false;
+    updateRequired = false;
     //std::cout << pac.coinCount << " and " << pac.puCount << std::endl;
     if (pac.coinCount >= 152 && pac.puCount == 4)
     {
@@ -132,7 +122,7 @@ void update(void)
         pac.gamseState = 1;
         gameState = 1;
         pac.win = 1;
-        // periodicTimer::updateRequired = true;
+        updateRequired = true;
     }
 
     else {
@@ -155,7 +145,7 @@ void update(void)
                 ECE_Ghost::pxx = pac.xx;
                 ECE_Ghost::pyy = pac.yy;
                 for (int i = 0; i < 4; i++) {
-                     ECE_Ghost::ghosts[i]->resetG();
+                     ghosts[i]->resetG();
                 }
 
                 isSick = false;
@@ -179,9 +169,9 @@ void update(void)
 
         
         if (enableGhosts) {
-            for (int i = 0; i < 4; i++) {
-                if (count1 % 6  == 0 && count1 > ECE_Ghost::ghosts[i]->limit)
-                    ECE_Ghost::ghosts[i]->move();
+            for (int i = 0; i < numGhosts; i++) {
+                if (count1 % 6  == 0 && count1 > ghosts[i]->limit)
+                    ghosts[i]->move();
                 
             }
             
@@ -209,7 +199,7 @@ void update(void)
        if(ECE_Ghost::gameState == 1) {
            pac.gamseState = 1;
            gameState = 1;
-        //periodicTimer::updateRequired = true;
+           updateRequired = true;
        }
 
        if (enableGhosts) count1++;
@@ -246,6 +236,17 @@ void init() {
     glEnable(GL_DEPTH_TEST);
     //pac.xx =10;
     //pac.yy =1;
+    char color[] { 'r', 'p', 'g', 'o' };
+
+    for (int ii = 0; ii  < numGhosts; ii++)
+    {             
+        auto ptr = make_unique<ECE_Ghost>(color[ii]);
+        ghosts.push_back(std::move(ptr));
+    }
+
+    //auto ptr = make_unique<pacman>();
+
+    //pieces.push_back(std::move(ptr));
 }
 //allow display to be resized while maintaing aspect ratio
 void changeSize(int w, int h)
@@ -452,7 +453,7 @@ void renderScene() {
                         glPushMatrix();
                         //glTranslatef(15 - row, 10 - col, -1.0);
                         //std::cout<< pac.xx << " " << pac.yy << std::endl;
-                        ECE_Pacman::drawPacMan(pac);
+                        pac.draw();
                         gameState = pac.gamseState;
                         glPopMatrix();
                         
@@ -472,21 +473,21 @@ void renderScene() {
                 case '6':
                     glPushMatrix();
                     //initialyze position
-                    ECE_Ghost::ghosts[2]->initGhost(row, col);
+                    ghosts[2]->initGhost(row, col);
                     glPopMatrix();
                     break;
                 //draw Pink and Red ghosts
                 case '7':
                     glPushMatrix();
                     //glTranslatef(15 - row + 0.5, 10 - col, -1.0);
-                    ECE_Ghost::ghosts[1]->initGhost(row, col);
+                    ghosts[1]->initGhost(row, col);
                     glPopMatrix();
 
                     rowRed = row;
                     colRed = col;
                     glPushMatrix();
                     //glTranslatef(15 - rowRed - 0.5, 10 - colRed, -1.0);
-                    ECE_Ghost::ghosts[0]->initGhost(rowRed, colRed);
+                    ghosts[0]->initGhost(rowRed, colRed);
                     //std::cout << red.xx << ", " << red.yy << std::endl;
                     glPopMatrix();
                     break;
@@ -494,7 +495,7 @@ void renderScene() {
                 case '8':
                     glPushMatrix();
                     //glTranslatef(15 - row + 0.5, 10 - col, -1.0);
-                    ECE_Ghost::ghosts[3]->initGhost(row, col);
+                    ghosts[3]->initGhost(row, col);
                     glPopMatrix();
                     break;
                 }
@@ -701,6 +702,10 @@ void pressSpecialKey(int key, int xx, int yy)
 //         //updateCount = 0;
 //     }
 // }
+void thread_timer() {
+
+    updateRequired = true;
+}
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
@@ -712,8 +717,11 @@ int main(int argc, char **argv) {
     glutReshapeFunc(changeSize); // window reshape callback
     glutDisplayFunc(renderScene); // (re)display callback
     //std::thread incr_update(thread_timer);
-    //glutIdleFunc(update); // incremental update
-    periodicTimer(10, update);
+    glutIdleFunc(update);
+    periodicTimer(40, []()
+                  { updateRequired = true;});
+    // periodicTimer(40, thread_timer);
+                 // incremental update
     glutKeyboardFunc(processNormalKeys); // process standard key clicks
     glutSpecialFunc(pressSpecialKey); // process special key pressed
 

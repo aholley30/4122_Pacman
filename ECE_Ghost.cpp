@@ -19,7 +19,7 @@
 
 GLUquadricObj *h = gluNewQuadric();
 
-void ECE_Ghost::drawGhost() {
+void ECE_Ghost::draw() {
     glTranslatef(xx, yy, -1.0);
     if(isSick) {
         glColor3f(1.0,1.0,1.0);
@@ -71,7 +71,7 @@ void ECE_Ghost::initGhost(int row, int col) {
     }
     if (!isDead) {
         drawnOnce = 1;
-        drawGhost();
+        draw();
     }
 }
 

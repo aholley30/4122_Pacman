@@ -19,8 +19,8 @@ ECE_Pacman::ECE_Pacman() {
 }
 
 //draw Pacman
-void ECE_Pacman::drawPacMan(ECE_Pacman pac) {
-    glTranslatef(pac.xx,pac.yy, -1.0);
+void ECE_Pacman::draw() {
+    glTranslatef(xx,yy, -1.0);
     glColor3f(1.0, 1.0, 0.0); //yellow
     glPushMatrix();
         glutSolidSphere(0.6, 20, 20); // makes him just big enough to go through maze w/o touching walls
